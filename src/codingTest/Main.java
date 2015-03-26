@@ -49,7 +49,7 @@ public class Main {
 			}
 			NavigableSet<KeyValuePair> it = sortedClasses.descendingSet();
 			for (KeyValuePair kv: it){
-				System.out.println(kv);
+				System.out.println(kv); 
 			}
 			// TODO pop items off the Iterator, check for link, image, text
 			System.out.println(it);
