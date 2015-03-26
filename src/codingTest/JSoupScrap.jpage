@@ -1,0 +1,11 @@
+String url = "http://www.cutestpaw.com/";
+Document doc = Jsoup.connect(url).get();
+Element link = doc.select("a").first();
+
+String text = doc.body().text(); // "An example link"
+String linkHref = link.attr("href"); // "http://example.com/"
+String linkText = link.text(); // "example""
+
+String linkOuterH = link.outerHtml(); 
+    // "<a href="http://example.com"><b>example</b></a>"
+String linkInnerH = link.html(); // "<b>example</b>";linkInnerH
