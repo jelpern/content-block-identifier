@@ -42,9 +42,11 @@ public class Main {
 						classCounter.add(c);
 					}
 				}
-				String classString = e.className();
-				if (classString.contains(" ")){
-					classCounter.add(classString);
+				// some elements have multiple classes
+				// count how many elements have the same combination of classes
+				if (classes.size()>1){
+					String classString = String.join(".",e.className().split(" "));
+					classCounter.add(classString);					
 				}
 			}
 			
@@ -63,14 +65,16 @@ public class Main {
 			for (KeyValuePair<String, Integer> kv: it){
 				Elements htmlClass = doc.select("." + kv.getKey());
 				int countContent = 0;
+				Tag t = htmlClass.first().tag();
+				// TODO check if all elements of the same class are also of the same tag
 				for (Element e: htmlClass){
-					Tag t = e.tag();
+//					Tag t1 = e.tag();
 //					if (e.hasClass("imgbox")){
 //						System.out.println("This is an imgbox!");
 //					}
 					countContent = (ContentElement.isContent(e) ? countContent++ : countContent);
 				}
-			System.out.println(t + "." + e.className() + "," + kv.getValue() + "," + countContent);
+				System.out.println(t + "." + kv.getKey() + "," + kv.getValue() + "," + countContent);
 			}
 			// TODO pop items off the Iterator, check for link, image, text
 			System.out.println();
