@@ -53,16 +53,16 @@ public class Main {
 			// take all the items out of the counter
 			Set<Map.Entry<String, Integer>> classes = classCounter.items();
 			// create a data store that efficiently and automatically sorts
-			TreeSet<KeyValuePair<String, Integer>> sortedClasses = new TreeSet<KeyValuePair<String, Integer>>();
+			TreeSet<TripleLiftElement<String, Integer>> sortedClasses = new TreeSet<TripleLiftElement<String, Integer>>();
 			// transform each entry the counter into a key value pair that sorts on *value*,
 			// and put everything in the sorted data store
 			for (Map.Entry<String, Integer> entry: classes){
-				KeyValuePair<String, Integer> kvp = new KeyValuePair<String, Integer>(entry.getKey(),entry.getValue());
+				TripleLiftElement<String, Integer> kvp = new TripleLiftElement<String, Integer>(entry.getKey(),entry.getValue());
 				sortedClasses.add(kvp);
 			}
-			NavigableSet<KeyValuePair<String, Integer>> it = sortedClasses.descendingSet();
+			NavigableSet<TripleLiftElement<String, Integer>> it = sortedClasses.descendingSet();
 			System.out.println("tag.className,number of occurences,number that are content");
-			for (KeyValuePair<String, Integer> kv: it){
+			for (TripleLiftElement<String, Integer> kv: it){
 				Elements htmlClass = doc.select("." + kv.getKey());
 				int countContent = 0;
 				Tag t = htmlClass.first().tag();

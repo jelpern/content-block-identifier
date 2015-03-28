@@ -11,12 +11,12 @@ package codingTest;
  * count of how many times a given class or class string appears in the DOM.
  * 
  */
-public class KeyValuePair <K,V> implements Comparable<KeyValuePair<K,V>>{
+public class TripleLiftElement <K,V> implements Comparable<TripleLiftElement<K,V>>{
 
 	private K key;
 	private V value;
 	
-	public KeyValuePair(K key, V value) {
+	public TripleLiftElement(K key, V value) {
 		this.key = key;
 		this.value = value;
 	}
@@ -81,7 +81,7 @@ public class KeyValuePair <K,V> implements Comparable<KeyValuePair<K,V>>{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		KeyValuePair other = (KeyValuePair) obj;
+		TripleLiftElement other = (TripleLiftElement) obj;
 		if (key == null) {
 			if (other.key != null)
 				return false;
@@ -96,7 +96,7 @@ public class KeyValuePair <K,V> implements Comparable<KeyValuePair<K,V>>{
 	}
 
 	@Override
-	public int compareTo(KeyValuePair<K, V> o) {
+	public int compareTo(TripleLiftElement<K, V> o) {
 		// compare values
 		int c = ((Comparable<V>)this.value).compareTo(o.getValue());
 		if (c !=0){
