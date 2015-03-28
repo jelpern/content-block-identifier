@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.jsoup.*;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 
 import java.util.HashMap;
@@ -50,16 +51,26 @@ public class Main {
 			// take all the items out of the counter
 			Set<Map.Entry<String, Integer>> classes = classCounter.items();
 			// create a data store that efficiently and automatically sorts
-			TreeSet<KeyValuePair> sortedClasses = new TreeSet();
+			TreeSet<KeyValuePair<String, Integer>> sortedClasses = new TreeSet<KeyValuePair<String, Integer>>();
 			// transform each entry the counter into a key value pair that sorts on *value*,
 			// and put everything in the sorted data store
 			for (Map.Entry<String, Integer> entry: classes){
-				KeyValuePair kvp = new KeyValuePair<String, Integer>(entry.getKey(),entry.getValue());
+				KeyValuePair<String, Integer> kvp = new KeyValuePair<String, Integer>(entry.getKey(),entry.getValue());
 				sortedClasses.add(kvp);
 			}
-			NavigableSet<KeyValuePair> it = sortedClasses.descendingSet();
-			for (KeyValuePair kv: it){
-
+			NavigableSet<KeyValuePair<String, Integer>> it = sortedClasses.descendingSet();
+			System.out.println("tag.className,number of occurences,number that are content");
+			for (KeyValuePair<String, Integer> kv: it){
+				Elements htmlClass = doc.select("." + kv.getKey());
+				int countContent = 0;
+				for (Element e: htmlClass){
+					Tag t = e.tag();
+//					if (e.hasClass("imgbox")){
+//						System.out.println("This is an imgbox!");
+//					}
+					countContent = (ContentElement.isContent(e) ? countContent++ : countContent);
+				}
+			System.out.println(t + "." + e.className() + "," + kv.getValue() + "," + countContent);
 			}
 			// TODO pop items off the Iterator, check for link, image, text
 			System.out.println();
