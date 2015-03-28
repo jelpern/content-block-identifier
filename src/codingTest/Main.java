@@ -72,7 +72,10 @@ public class Main {
 //					if (e.hasClass("imgbox")){
 //						System.out.println("This is an imgbox!");
 //					}
-					countContent = (ContentElement.isContent(e) ? countContent++ : countContent);
+					if (e.className().contains("imgbox") && !ContentElement.isContent(e)){
+						System.out.println(e);
+					}
+					countContent = ContentElement.isContent(e) ? countContent + 1 : countContent;
 				}
 				System.out.println(t + "." + kv.getKey() + "," + kv.getValue() + "," + countContent);
 			}
