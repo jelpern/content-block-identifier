@@ -1,21 +1,16 @@
 package codingTest;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.NavigableSet;
+import java.util.Set;
+import java.util.TreeSet;
 
-import org.jsoup.*;
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.NavigableSet;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 public class Main {
 
@@ -53,17 +48,17 @@ public class Main {
 			// take all the items out of the counter
 			Set<Map.Entry<String, Integer>> classes = classCounter.items();
 			// create a data store that efficiently and automatically sorts
-			TreeSet<TripleLiftElement<String, Integer>> sortedClasses = new TreeSet<TripleLiftElement<String, Integer>>();
+			TreeSet<TripleLiftClassSelectorObject> sortedClasses = new TreeSet<TripleLiftClassSelectorObject>();
 			// transform each entry the counter into a key value pair that sorts on *value*,
 			// and put everything in the sorted data store
 			for (Map.Entry<String, Integer> entry: classes){
-				TripleLiftElement<String, Integer> kvp = new TripleLiftElement<String, Integer>(entry.getKey(),entry.getValue());
-				sortedClasses.add(kvp);
+				TripleLiftClassSelectorObject tlcso = new TripleLiftClassSelectorObject(entry.getKey(),entry.getValue());
+				sortedClasses.add(tlcso);
 			}
-			NavigableSet<TripleLiftElement<String, Integer>> it = sortedClasses.descendingSet();
+			NavigableSet<TripleLiftClassSelectorObject> it = sortedClasses.descendingSet();
 			System.out.println("tag.className,number of occurences,number that are content");
-			for (TripleLiftElement<String, Integer> kv: it){
-				Elements htmlClass = doc.select("." + kv.getKey());
+			for (TripleLiftClassSelectorObject tlcso: it){
+				Elements htmlClass = doc.select("." + tlcso.getClassString());
 				int countContent = 0;
 				Tag t = htmlClass.first().tag();
 				// TODO check if all elements of the same class are also of the same tag
@@ -72,12 +67,12 @@ public class Main {
 //					if (e.hasClass("imgbox")){
 //						System.out.println("This is an imgbox!");
 //					}
-					if (e.className().contains("imgbox") && !ContentElement.isContent(e)){
-						System.out.println(e);
-					}
+//					if (e.className().contains("imgbox") && !ContentElement.isContent(e)){
+//						System.out.println(e);
+//					}
 					countContent = ContentElement.isContent(e) ? countContent + 1 : countContent;
 				}
-				System.out.println(t + "." + kv.getKey() + "," + kv.getValue() + "," + countContent);
+				System.out.println(t + "." + tlcso.getClassString() + "," + tlcso.getCount() + "," + countContent);
 			}
 			// TODO pop items off the Iterator, check for link, image, text
 			System.out.println();
