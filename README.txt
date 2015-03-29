@@ -4,6 +4,7 @@ Counter counts how many time each CSS selector occurs. This includes unique tag 
 
 ClassCounter is not currently implemented with a sorted class. This is because the order can change with every insertion. It would be easy to change this however in the implementation.
 
-If there are multiple spaces between class names in a tag, it will get the selector right. However it is possible that other types of whitespace 
+Counts as a content element any CSS selector (as defined above) whose child elements include an a[href], an <img> tag, and text of any kind. It does not work with sites that display images using tags other than <img> (e.g. fansided.com uses a data-background attribute with a value that
+points to an img).
 
-Should counts have to be equal for the selector objects to be the same? I don't think so.
+It is unable to read site that JSoup cannot read, e.g. rantchic.com. I played around with different useragents to see if I could fool the site into thinking my program was a browser, unsuccessfully.
