@@ -16,7 +16,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO take input from command line
-		String url = "http://www.cutestpaw.com/";
+		String url = "http://www.rantchic.com/";
 		try {
 			Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0").get();
 			// Counter is a wrapper around a hash table to mirror the Python Counter class 
@@ -41,13 +41,19 @@ public class Main {
 				// count how many elements have the same combination of classes
 				if (classes.size() > 1) {
 // 					String selector = e.tagName() + "." + String.join(".",e.className().split("\\s+"));
-					// not sure if above handles all types of whitespace, so better safe than sorry
+					// above is elegant, but not sure if it handles all types of whitespace in the className string, 
+					// so better safe than sorry
 					String selector = e.tagName();
 					String classSeparator = ".";
 					for (String c: classes){
 						selector += classSeparator + c;
 					}
-					selectorCounter.add(new TripleLiftClassSelectorObject(selector));					
+					TripleLiftClassSelectorObject newTlcso = new TripleLiftClassSelectorObject(selector);  
+					TripleLiftClassSelectorObject returnedTlcso = selectorCounter.add(newTlcso);
+					boolean match = returnedTlcso.equals(returnedTlcso);
+					if (!match){
+						System.out.println (returnedTlcso + " does not match " + newTlcso);
+					}
 				}
 			} // done counting tag.class selectors
 			
@@ -58,6 +64,7 @@ public class Main {
 			// transform each entry in the counter into a TripleLiftClassSelectorObject that sorts on *value*,
 			// and put everything in the sorted data store
 			for (Entry<TripleLiftClassSelectorObject, Integer> entry: classes){
+				entry.getKey().setCount(entry.getValue());
 //				TripleLiftClassSelectorObject tlcso = new TripleLiftClassSelectorObject(entry.getKey().getSelector(),entry.getValue());
 				sortedClasses.add(entry.getKey());
 			}

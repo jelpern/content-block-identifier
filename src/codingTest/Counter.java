@@ -9,9 +9,11 @@ public class Counter {
 	final HashMap<TripleLiftClassSelectorObject, Integer> counts = new HashMap<>();
 
 	public TripleLiftClassSelectorObject add(TripleLiftClassSelectorObject t) {
-		counts.merge(t, 1, Integer::sum);
+		int c = counts.merge(t, 1, Integer::sum);
 		t.setCount(counts.get(t));
-		if (true) {} // conditional breakpoint hack
+		if (c != t.getCount()) { // conditional breakpoint hack 
+			System.out.println("Element count went wrong on item: " + t.getSelector());
+		} 
 		return t;
 		// do we need to return t?
 	}
