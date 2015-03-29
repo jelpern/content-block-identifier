@@ -10,14 +10,13 @@ import java.util.TreeSet;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 
 public class Main {
 
 	public static void main(String[] args) {
 		// TODO take input from command line
-		String url = "http://clementinedaily.com/";
+		String url = "http://www.cutestpaw.com/";
 		try {
 			Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0").get();
 			// Counter is a wrapper around a hash table to mirror the Python Counter class 
@@ -41,8 +40,13 @@ public class Main {
 				// some elements have multiple classes
 				// count how many elements have the same combination of classes
 				if (classes.size() > 1) {
+// 					String selector = e.tagName() + "." + String.join(".",e.className().split("\\s+"));
+					// not sure if above handles all types of whitespace, so better safe than sorry
 					String selector = e.tagName();
-					selector += "." + String.join(".",e.className().split("\\s+")); // match any amount of whitespace b/w classnames
+					String classSeparator = ".";
+					for (String c: classes){
+						selector += classSeparator + c;
+					}
 					selectorCounter.add(new TripleLiftClassSelectorObject(selector));					
 				}
 			} // done counting tag.class selectors
