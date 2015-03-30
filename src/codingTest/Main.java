@@ -38,7 +38,7 @@ public class Main {
 					if (!c.isEmpty()) {
 						selector += "." + c;
 					}
-					TripleLiftClassSelectorObject tlcso = new TripleLiftClassSelectorObject(selector); 
+					TripleLiftElement tlcso = new TripleLiftElement(selector); 
 					selectorCounter.add(tlcso);
 				}
 				// some elements have multiple classes
@@ -52,8 +52,8 @@ public class Main {
 					for (String c: classes){
 						selector += classSeparator + c;
 					}
-					TripleLiftClassSelectorObject newTlcso = new TripleLiftClassSelectorObject(selector);  
-					TripleLiftClassSelectorObject returnedTlcso = selectorCounter.add(newTlcso);
+					TripleLiftElement newTlcso = new TripleLiftElement(selector);  
+					TripleLiftElement returnedTlcso = selectorCounter.add(newTlcso);
 					boolean match = returnedTlcso.equals(returnedTlcso);
 					if (!match){
 						System.out.println (returnedTlcso + " does not match " + newTlcso);
@@ -62,19 +62,19 @@ public class Main {
 			} // done counting tag.class selectors
 			
 			// take all the items out of the counter
-			Set<Map.Entry<TripleLiftClassSelectorObject, Integer>> classes = selectorCounter.items();
+			Set<Map.Entry<TripleLiftElement, Integer>> classes = selectorCounter.items();
 			// create a data store that efficiently and automatically sorts
-			TreeSet<TripleLiftClassSelectorObject> sortedClasses = new TreeSet<TripleLiftClassSelectorObject>();
-			// transform each entry in the counter into a TripleLiftClassSelectorObject that sorts on *value*,
+			TreeSet<TripleLiftElement> sortedClasses = new TreeSet<TripleLiftElement>();
+			// transform each entry in the counter into a TripleLiftElement that sorts on *value*,
 			// and put everything in the sorted data store
-			for (Entry<TripleLiftClassSelectorObject, Integer> entry: classes){
+			for (Entry<TripleLiftElement, Integer> entry: classes){
 				entry.getKey().setCount(entry.getValue());
-//				TripleLiftClassSelectorObject tlcso = new TripleLiftClassSelectorObject(entry.getKey().getSelector(),entry.getValue());
+//				TripleLiftElement tlcso = new TripleLiftElement(entry.getKey().getSelector(),entry.getValue());
 				sortedClasses.add(entry.getKey());
 			}
-			NavigableSet<TripleLiftClassSelectorObject> it = sortedClasses.descendingSet();
+			NavigableSet<TripleLiftElement> it = sortedClasses.descendingSet();
 			System.out.println("tag.className,number of occurences,number that are content");
-			for (TripleLiftClassSelectorObject tlcso: it){
+			for (TripleLiftElement tlcso: it){
 				String selector = tlcso.getSelector();
 				if (selector.equals("div")) { // conditional break hack
 					// TODO remove
@@ -90,6 +90,10 @@ public class Main {
 				System.out.println(selector + "," + tlcso.getCount() + "," + countContent);
 			}
 			System.out.println();
+			
+			Integer i = 7;
+			i++;
+			System.out.println(i);
 			//System.out.println(doc);
 		}
 		catch (IOException e) {

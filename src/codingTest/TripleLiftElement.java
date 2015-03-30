@@ -1,6 +1,8 @@
 package codingTest;
 
+import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
+import org.jsoup.select.Elements;
 
 /**
  * 
@@ -17,7 +19,7 @@ import org.jsoup.parser.Tag;
  * OPEN: Should it extend org.jsoup.nodes.Element? This would require giving it a single tag
  * 
  */
-public class TripleLiftClassSelectorObject /*extends org.jsoup.nodes.Element*/ implements Comparable<TripleLiftClassSelectorObject>{
+public class TripleLiftElement implements Comparable<TripleLiftElement>{
 
 	private String classString; 
 	private String tag;
@@ -26,11 +28,19 @@ public class TripleLiftClassSelectorObject /*extends org.jsoup.nodes.Element*/ i
 	private Integer numWithContent = 0; // number of occurrences that contain content
 	private Integer numWithoutContent = 0; // number of occurrences that don't contain content
 	
-	public TripleLiftClassSelectorObject(String selector) {
+	public static boolean isContent(Element e){
+		Elements links = e.select("a[href]");
+		Elements images = e.select("img");
+		boolean text = e.hasText();
+		return ((links.size() > 0) && (images.size() > 0) && (text));
+	}
+
+	
+	public TripleLiftElement(String selector) {
 		this.selector = selector;
 	}
 
-	public TripleLiftClassSelectorObject(String selector, Integer count) {
+	public TripleLiftElement(String selector, Integer count) {
 		this.selector = selector;
 		this.count = count;
 	}
@@ -66,6 +76,10 @@ public class TripleLiftClassSelectorObject /*extends org.jsoup.nodes.Element*/ i
 		this.count = value;
 	}
 
+	public void incrementCount() {
+		this.count++;
+	}
+	
 	/**
 	 * @return the tag
 	 */
@@ -108,6 +122,10 @@ public class TripleLiftClassSelectorObject /*extends org.jsoup.nodes.Element*/ i
 		this.numWithContent = numWithContent;
 	}
 
+	public void incrememtNumWithContent() {
+		this.numWithContent++;
+	}
+	
 	/**
 	 * @return the numWithoutContent
 	 */
@@ -122,6 +140,10 @@ public class TripleLiftClassSelectorObject /*extends org.jsoup.nodes.Element*/ i
 		this.numWithoutContent = numWithoutContent;
 	}
 
+	public void incrementNumWithoutContent() {
+		this.numWithoutContent++;
+	}
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 * (className, count)
@@ -155,7 +177,7 @@ public class TripleLiftClassSelectorObject /*extends org.jsoup.nodes.Element*/ i
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		TripleLiftClassSelectorObject other = (TripleLiftClassSelectorObject) obj;
+		TripleLiftElement other = (TripleLiftElement) obj;
 		if (selector == null) {
 			if (other.selector != null)
 				return false;
@@ -171,7 +193,7 @@ public class TripleLiftClassSelectorObject /*extends org.jsoup.nodes.Element*/ i
 	}
 
 	@Override
-	public int compareTo(TripleLiftClassSelectorObject o) {
+	public int compareTo(TripleLiftElement o) {
 		// compare values
 		int c = ((Comparable<Integer>)this.count).compareTo(o.getCount());
 		if (c !=0){
