@@ -195,12 +195,17 @@ public class TripleLiftSelector implements Comparable<TripleLiftSelector>{
 	@Override
 	public int compareTo(TripleLiftSelector o) {
 		// compare values
-		int c = ((Comparable<Integer>)this.count).compareTo(o.getCount());
+		int c = ((Comparable<Integer>)this.numWithContent).compareTo(o.getNumWithContent());
 		if (c !=0){
 			return c;
 		} else {
-			return ((Comparable<String>)this.selector).compareTo(o.getSelector());
-		}
+			c = ((Comparable<Integer>)this.count).compareTo(o.getCount());
+			if (c !=0){
+				return c;
+			} else {
+				return ((Comparable<String>)this.selector).compareTo(o.getSelector());
+			}
+		} 
 	}
 	
 }
