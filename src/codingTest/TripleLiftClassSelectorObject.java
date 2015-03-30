@@ -133,6 +133,7 @@ public class TripleLiftClassSelectorObject /*extends org.jsoup.nodes.Element*/ i
 
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
+	 * Two TripleLiftClassSelectorObjectds with the same selector must hash equally, otherwise merge won't work 
 	 */
 	@Override
 	public int hashCode() {

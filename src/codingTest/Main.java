@@ -15,11 +15,15 @@ import org.jsoup.select.Elements;
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO take input from command line
-		String url = "http://www.rantchic.com/";
+		// take input from command line
+		if (args.length < 1) {
+			System.out.println("Please enter a url to read from.");
+		}
+		String url = args[0];
 		try {
 			Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0").get();
-			// Counter is a wrapper around a hash table to mirror the Python Counter class 
+			// Counter is a wrapper around a hash table to mirror the Python Counter class
+			// TODO replace Counter with a simple hashmap where the key is the selector string and the value is the TLCSO
 			Counter selectorCounter = new Counter();
 			Elements allElements = doc.getAllElements(); 
 			
@@ -41,8 +45,8 @@ public class Main {
 				// count how many elements have the same combination of classes
 				if (classes.size() > 1) {
 // 					String selector = e.tagName() + "." + String.join(".",e.className().split("\\s+"));
-					// above is elegant, but not sure if it handles all types of whitespace in the className string, 
-					// so better safe than sorry
+					// Above is elegant, but not sure if it handles all types of whitespace in the className string. 
+					// Better safe than sorry
 					String selector = e.tagName();
 					String classSeparator = ".";
 					for (String c: classes){
@@ -72,7 +76,8 @@ public class Main {
 			System.out.println("tag.className,number of occurences,number that are content");
 			for (TripleLiftClassSelectorObject tlcso: it){
 				String selector = tlcso.getSelector();
-				if (selector.isEmpty() || selector == null) { // conditional break hack
+				if (selector.equals("div")) { // conditional break hack
+					// TODO remove
 					Integer i = 4;
 					i++;
 				} 
