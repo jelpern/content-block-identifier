@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class Counter {
+public class Counter extends HashMap<String, TripleLiftSelector> {
 	
-	final HashMap<TripleLiftElement, Integer> counts = new HashMap<>();
+	final HashMap<TripleLiftSelector, Integer> counts = new HashMap<>();
 
-	public TripleLiftElement add(TripleLiftElement t) {
+	public TripleLiftSelector add(TripleLiftSelector t) {
 		int c = counts.merge(t, 1, Integer::sum);
 		t.setCount(counts.get(t));
 		if (c != t.getCount()) { // conditional breakpoint hack 
@@ -18,11 +18,11 @@ public class Counter {
 		// do we need to return t?
 	}
 
-	public int count(TripleLiftElement t) {
+	public int count(TripleLiftSelector t) {
 		return counts.getOrDefault(t, 0);
 	}
 	
-	public Set<Map.Entry<TripleLiftElement, Integer>> items() {
+	public Set<Map.Entry<TripleLiftSelector, Integer>> items() {
 		return counts.entrySet();
 	}
 	

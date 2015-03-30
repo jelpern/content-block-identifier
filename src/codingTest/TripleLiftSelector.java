@@ -19,7 +19,7 @@ import org.jsoup.select.Elements;
  * OPEN: Should it extend org.jsoup.nodes.Element? This would require giving it a single tag
  * 
  */
-public class TripleLiftElement implements Comparable<TripleLiftElement>{
+public class TripleLiftSelector implements Comparable<TripleLiftSelector>{
 
 	private String classString; 
 	private String tag;
@@ -36,11 +36,11 @@ public class TripleLiftElement implements Comparable<TripleLiftElement>{
 	}
 
 	
-	public TripleLiftElement(String selector) {
+	public TripleLiftSelector(String selector) {
 		this.selector = selector;
 	}
 
-	public TripleLiftElement(String selector, Integer count) {
+	public TripleLiftSelector(String selector, Integer count) {
 		this.selector = selector;
 		this.count = count;
 	}
@@ -122,7 +122,7 @@ public class TripleLiftElement implements Comparable<TripleLiftElement>{
 		this.numWithContent = numWithContent;
 	}
 
-	public void incrememtNumWithContent() {
+	public void incrementNumWithContent() {
 		this.numWithContent++;
 	}
 	
@@ -177,7 +177,7 @@ public class TripleLiftElement implements Comparable<TripleLiftElement>{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		TripleLiftElement other = (TripleLiftElement) obj;
+		TripleLiftSelector other = (TripleLiftSelector) obj;
 		if (selector == null) {
 			if (other.selector != null)
 				return false;
@@ -193,7 +193,7 @@ public class TripleLiftElement implements Comparable<TripleLiftElement>{
 	}
 
 	@Override
-	public int compareTo(TripleLiftElement o) {
+	public int compareTo(TripleLiftSelector o) {
 		// compare values
 		int c = ((Comparable<Integer>)this.count).compareTo(o.getCount());
 		if (c !=0){

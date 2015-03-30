@@ -23,7 +23,7 @@ public class Main {
 		try {
 			Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0").get();
 			// Counter is a wrapper around a hash table to mirror the Python Counter class
-			// TODO replace Counter with a simple hashmap where the key is the selector string and the value is the TLCSO
+			// TODO replace Counter with a simple hashmap where the key is the selector string and the value is the tls
 			Counter selectorCounter = new Counter();
 			Elements allElements = doc.getAllElements(); 
 			
@@ -31,6 +31,7 @@ public class Main {
 			for (Element e: allElements) {
 				Set<String> classes = e.classNames();
 				// for loop necessary because some elements have more than one class
+				boolean elementIsContent = TripleLiftSelector.isContent(e);
 				for (String c: classes) {
 					// conditional breakpoint hack - does nothing
 					String selector = e.tagName();
@@ -38,8 +39,15 @@ public class Main {
 					if (!c.isEmpty()) {
 						selector += "." + c;
 					}
-					TripleLiftElement tlcso = new TripleLiftElement(selector); 
-					selectorCounter.add(tlcso);
+					if (selectorCounter.containsKey(selector)) {
+						selectorCounter.get(selector).incrementCount();
+					} else {	
+						TripleLiftSelector tls = new TripleLiftSelector(selector, 1);
+						selectorCounter.put(selector, tls);
+					}
+					TripleLiftSelector tls = selectorCounter.get(selector);
+					if (elementIsContent) tls.incrementNumWithContent();
+					else tls.incrementNumWithoutContent();
 				}
 				// some elements have multiple classes
 				// count how many elements have the same combination of classes
@@ -52,48 +60,27 @@ public class Main {
 					for (String c: classes){
 						selector += classSeparator + c;
 					}
-					TripleLiftElement newTlcso = new TripleLiftElement(selector);  
-					TripleLiftElement returnedTlcso = selectorCounter.add(newTlcso);
-					boolean match = returnedTlcso.equals(returnedTlcso);
-					if (!match){
-						System.out.println (returnedTlcso + " does not match " + newTlcso);
+					if (selectorCounter.containsKey(selector)) {
+						selectorCounter.get(selector).incrementCount();
+					} else {	
+						TripleLiftSelector tls = new TripleLiftSelector(selector, 1);
+						selectorCounter.put(selector, tls);
 					}
+					TripleLiftSelector tls = selectorCounter.get(selector);
+					if (elementIsContent) tls.incrementNumWithContent();
+					else tls.incrementNumWithoutContent();
+
 				}
 			} // done counting tag.class selectors
 			
-			// take all the items out of the counter
-			Set<Map.Entry<TripleLiftElement, Integer>> classes = selectorCounter.items();
-			// create a data store that efficiently and automatically sorts
-			TreeSet<TripleLiftElement> sortedClasses = new TreeSet<TripleLiftElement>();
-			// transform each entry in the counter into a TripleLiftElement that sorts on *value*,
-			// and put everything in the sorted data store
-			for (Entry<TripleLiftElement, Integer> entry: classes){
-				entry.getKey().setCount(entry.getValue());
-//				TripleLiftElement tlcso = new TripleLiftElement(entry.getKey().getSelector(),entry.getValue());
-				sortedClasses.add(entry.getKey());
-			}
-			NavigableSet<TripleLiftElement> it = sortedClasses.descendingSet();
-			System.out.println("tag.className,number of occurences,number that are content");
-			for (TripleLiftElement tlcso: it){
-				String selector = tlcso.getSelector();
-				if (selector.equals("div")) { // conditional break hack
-					// TODO remove
-					Integer i = 4;
-					i++;
-				} 
-				Elements htmlClass = doc.select(selector);
-				int countContent = 0;
-				// TODO check if all elements of the same class are also of the same tag
-				for (Element e: htmlClass){
-					countContent = ContentElement.isContent(e) ? countContent + 1 : countContent;
-				}
-				System.out.println(selector + "," + tlcso.getCount() + "," + countContent);
+			// now that we're done counting, sort
+			TreeSet<TripleLiftSelector> sortedClasses = new TreeSet<>(selectorCounter.values());
+			NavigableSet<TripleLiftSelector> it = sortedClasses.descendingSet();
+			System.out.println("tag.className,number of occurences,number that are content,number that are not content");
+			for (TripleLiftSelector tls: it){
+				System.out.println(tls.getSelector() + "," + tls.getCount() + "," + tls.getNumWithContent() + "," + tls.getNumWithoutContent());
 			}
 			System.out.println();
-			
-			Integer i = 7;
-			i++;
-			System.out.println(i);
 			//System.out.println(doc);
 		}
 		catch (IOException e) {
