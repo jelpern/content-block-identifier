@@ -74,8 +74,7 @@ public class Main {
 			} // done counting tag.class selectors
 			
 			// now that we're done counting, sort
-			TreeSet<TripleLiftSelector> sortedClasses = new TreeSet<>(selectorCounter.values());
-			NavigableSet<TripleLiftSelector> it = sortedClasses.descendingSet();
+			NavigableSet<TripleLiftSelector> it = new TreeSet<>(selectorCounter.values()).descendingSet();
 			System.out.println("tag.className,number of occurences,number that are content,number that are not content");
 			for (TripleLiftSelector tls: it){
 				System.out.println(tls.getSelector() + "," + tls.getCount() + "," + tls.getNumWithContent() + "," + tls.getNumWithoutContent());
