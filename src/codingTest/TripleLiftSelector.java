@@ -29,12 +29,36 @@ public class TripleLiftSelector implements Comparable<TripleLiftSelector>{
 	private Integer numWithoutContent = 0; // number of occurrences that don't contain content
 	
 	public static boolean isContent(Element e){
-		Elements links = e.select("a[href]");
-		Elements images = e.select("img");
+		boolean hasLinks = TripleLiftSelector.hasLinks(e);
+		boolean hasImages = hasImages(e);
 		boolean text = e.hasText();
-		return ((links.size() > 0) && (images.size() > 0) && (text));
+		return (hasLinks && hasImages && (text));
 	}
 
+	public static boolean hasLinks (Element e) {
+		Elements links = e.select("a[href]");
+		return (links.size() > 0);
+	}
+
+	
+	/**
+	 * @param e
+	 * @return
+	 */
+	public static boolean hasImages(Element e) {
+		Elements images = e.select("img");
+		if (images.size() > 0) {
+			return true;
+		} else {
+			images = e.select("[data-background$=.jpg]");
+			if (images.size() > 0) {
+				return true;
+			}
+			// TODO add png case
+			// TODO find regex for all images
+		}
+		return false;
+	}
 	
 	public TripleLiftSelector(String selector) {
 		this.selector = selector;
