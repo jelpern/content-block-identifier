@@ -1,5 +1,7 @@
 package codingTest;
 
+import java.util.Collection;
+
 import org.jsoup.nodes.Element;
 import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
@@ -47,16 +49,18 @@ public class TripleLiftSelector implements Comparable<TripleLiftSelector>{
 	 */
 	public static boolean hasImages(Element e) {
 		Elements images = e.select("img");
+		Elements imagesDataBackgroundJPG = e.select("[data-background$=.jpg]");
+		Elements imagesDataBackgroundGIF = e.select("[data-background$=.gif]");
+		Elements imagesDataBackgroundPNG = e.select("[data-background$=.png]");
+		Elements imagesBackgroundURL = e.select("[style^=background:url]");
+		images.addAll(imagesDataBackgroundJPG);
+		images.addAll(imagesDataBackgroundGIF);
+		images.addAll(imagesDataBackgroundPNG);
+		images.addAll(imagesBackgroundURL);
 		if (images.size() > 0) {
 			return true;
-		} else {
-			images = e.select("[data-background$=.jpg]");
-			if (images.size() > 0) {
-				return true;
-			}
-			// TODO add png case
-			// TODO find regex for all images
-		}
+		} 
+		// TODO find regex for all images
 		return false;
 	}
 	

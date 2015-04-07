@@ -2,7 +2,7 @@ README
 
 Program function
 ----------------
-Takes a URL as input, and outputs the most commonly occuring element on the page that contains content. A content element is defined as any element whose child nodes include a tag with an href attribute (i.e. a selector matching "a[href]"), an <img> tag, and text of any kind. It does not work with sites that display images using tags other than <img> (e.g. fansided.com uses a data-background attribute with a value that points to an image file).
+Takes a URL as input, and outputs the most commonly occuring element on the page that contains content. A content element is defined as any element whose child nodes include an image, a link, and text. 
 
 
 How It Works
@@ -11,6 +11,13 @@ How It Works
 JSoup is the DOM/HTML parser 
 
 Main is primarily for scrubbing input and creating output.
+
+A link is identified by a tag with an href attribute (i.e. a selector matching "a[href]"). An image is identified by the presence of one or more of the following: 
+- an <img> tag
+- an element with a data-background attribute whose value ends in ".jpg", ".gif", or ".png"
+- an element with a style attribute whose value starts with "background:url"
+
+This is clearly not the full list of ways that an image can be represented in HTML5, but seemed like a good 80/20 point to stop.
 
 Counter counts how many time each CSS selector occurs. This includes unique tag and tag.class combinations. In other words, elements with multiple classes are counted as both the tag with each class separately, as well as the tag with all the classes together (e.g. an element with the tag <div class="class1 class2"> will get counted as div.class1, div.class2, *and* div.class1.class2). This seemed like the safest thing to do. It would be easy to change this in the Counter.countContentElements method. Note that it is assumed that the order of the classes is the same in every element with the same combination of classes.
 
