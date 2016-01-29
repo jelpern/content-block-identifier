@@ -1,9 +1,13 @@
 README
 
-Program function
+Program goal
 ----------------
-Takes a URL as input, and outputs the most commonly occuring element on the page that contains content. A content element is defined as any element whose child nodes include an image, a link, and text. 
+Takes a URL as input, and outputs the most commonly occuring element on the page that contains content. A content element is defined as any element whose child nodes include an image, a link, and text. Passing "debug" as an argument to main.java on execution will print out a list of all elements on the page and how many of them are content elements, sorted by the number of times each element appears.
 
+
+Context
+-------
+This was a coding test for a software engineering interview. It was designed to fulfill the goal, nothing more, nothing less.
 
 How It Works
 ------------
